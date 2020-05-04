@@ -216,6 +216,10 @@ def YoloV3(size=416, channels=3, anchors=yolo_anchors,
     x = YoloConv(128, name='yolo_conv_2')((x, x_36))
     output_2 = YoloOutput(128, len(masks[2]), classes, name='yolo_output_2')(x)
 
+    return Model(inputs, (output_0, output_1, output_2), name='yolov3')
+
+
+    '''
     if training:
         return Model(inputs, (output_0, output_1, output_2), name='yolov3')
 
@@ -228,8 +232,10 @@ def YoloV3(size=416, channels=3, anchors=yolo_anchors,
 
     outputs = Lambda(lambda x: yolo_nms(x, anchors, masks, classes),
                      name='yolo_nms')((boxes_0[:3], boxes_1[:3], boxes_2[:3]))
-
+    
+    
     return Model(inputs, outputs, name='yolov3')
+    '''
 
 
 def YoloV3Tiny(size=416, channels=3, anchors=yolo_tiny_anchors,
