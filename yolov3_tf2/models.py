@@ -68,8 +68,8 @@ def DarknetBlock(x, filters, blocks):
     return x
 
 
-def Darknet(name=None):
-    x = inputs = Input([None, None, 3])
+def Darknet(name=None, size = 416):
+    x = inputs = Input([size, size, 3])
     x = DarknetConv(x, 32, 3)
     x = DarknetBlock(x, 64, 1)
     x = DarknetBlock(x, 128, 2)  # skip connection
@@ -79,8 +79,8 @@ def Darknet(name=None):
     return tf.keras.Model(inputs, (x_36, x_61, x), name=name)
 
 
-def DarknetTiny(name=None):
-    x = inputs = Input([None, None, 3])
+def DarknetTiny(name=None, size = 416):
+    x = inputs = Input([size, size, 3])
     x = DarknetConv(x, 16, 3)
     x = MaxPool2D(2, 2, 'same')(x)
     x = DarknetConv(x, 32, 3)
@@ -201,7 +201,7 @@ def yolo_nms(outputs, anchors, masks, classes):
     return boxes, scores, classes, valid_detections
 
 
-def YoloV3(size=None, channels=3, anchors=yolo_anchors,
+def YoloV3(size=416, channels=3, anchors=yolo_anchors,
            masks=yolo_anchor_masks, classes=80, training=False):
     x = inputs = Input([size, size, channels], name='input')
 
@@ -232,7 +232,7 @@ def YoloV3(size=None, channels=3, anchors=yolo_anchors,
     return Model(inputs, outputs, name='yolov3')
 
 
-def YoloV3Tiny(size=None, channels=3, anchors=yolo_tiny_anchors,
+def YoloV3Tiny(size=416, channels=3, anchors=yolo_tiny_anchors,
                masks=yolo_tiny_anchor_masks, classes=80, training=False):
     x = inputs = Input([size, size, channels], name='input')
 
